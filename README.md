@@ -1,1 +1,1 @@
-Repo for some collab with Angelo and Austin.
+Repo for some collab with Angelo and Austin Bentley.
