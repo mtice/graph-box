@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.scss';
-import BigNumber from './components/BigNumber.js';
+import BarGraph from './components/Graphs/BarGraph/index';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <BigNumber />
+        <BarGraph />
       </header>
     </div>
   );

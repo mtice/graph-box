@@ -1,0 +1,51 @@
+.bar-graph {
+  display: grid;
+  grid-template-areas: 
+  "title title title"
+  "vertical-label grid grid"
+  ". horizontal-label horizontal-label";
+
+  .graph {
+    &-name {
+      grid-area: title;
+      text-align: center;
+      font-size: 72px;
+    }
+
+    &-grid {
+      grid-area: grid;
+      height: 400px;
+      border-bottom: 1px solid black;
+      border-left: 1px solid black;
+      display: flex;
+      justify-content: space-evenly;
+      position: relative;
+    }
+
+    &-verticle-delimiters {
+      position: absolute;
+      left: -34px;
+      align-items: flex-end;
+      flex-direction: column-reverse;
+      display: flex;
+      height: 100%;
+      line-height: 0;
+      justify-content: space-between;
+    }
+
+    &-label {
+      font-size: 36px;
+
+      &.horizontal {
+        grid-area: horizontal-label;
+        text-align: center;
+        padding-top: 16px;
+      }
+      
+      &.vertical {
+        grid-area: vertical-label;
+        margin: auto;
+      }
+    }
+  }
+}
