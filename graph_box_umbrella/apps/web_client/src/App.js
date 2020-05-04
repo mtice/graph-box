@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.scss';
-import BarGraph from './components/Graphs/BarGraph/index';
+import BasicColumnChart from './components/ColumnCharts/ColumnChart/index';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <BarGraph />
+        <BasicColumnChart />
       </header>
     </div>
   );
