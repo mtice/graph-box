@@ -23,7 +23,7 @@ defmodule GraphBoxWeb.Router do
   scope "/api", GraphBoxWeb do
     pipe_through(:api)
 
-    get("/", TestController, :index)
+    get("/bar-graph", BarGraphController, :index)
   end
 
   # Enables LiveDashboard only for development

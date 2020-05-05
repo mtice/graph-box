@@ -1,6 +1,6 @@
-function getValueTest() {
-  return fetch("/api/")
+function getBarGraph() {
+  return fetch("/api/bar-graph")
     .then(response => response.json())
 }
 
-export default getValueTest;
+export default getBarGraph;

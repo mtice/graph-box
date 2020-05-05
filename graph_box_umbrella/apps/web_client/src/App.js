@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.scss';
-import BigNumber from './components/BigNumber.js';
+import BasicColumnChart from './components/ColumnCharts/ColumnChart/index';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <BigNumber />
+        <BasicColumnChart />
       </header>
     </div>
   );
