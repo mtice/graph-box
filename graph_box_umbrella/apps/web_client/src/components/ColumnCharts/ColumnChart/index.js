@@ -82,18 +82,6 @@ class BasicColumnChart extends Component {
     })
   }
 
-  setYAxisName(e) {
-    this.setState({
-      options: {
-        yaxis: {
-          title: {
-            text: e.target.value
-          }
-        }
-      }
-    })
-  }
-
   setCategories(e) {
     this.setState({
       options: {
@@ -106,19 +94,17 @@ class BasicColumnChart extends Component {
     })
   }
 
-  addXAxisColumn(e) {
-    console.log('soooo');
-  }
-
   editSeries(e, name) {
-    const newSeriesArray = [...this.state.series]
-    const index = newSeriesArray.findIndex((i) => i.name === name)
+    if (e.target.value !== "") {
+      const newSeriesArray = [...this.state.series]
+      const index = newSeriesArray.findIndex((i) => i.name === name)
 
-    newSeriesArray[index] = { ...newSeriesArray[index], name: e.target.value }
+      newSeriesArray[index] = { ...newSeriesArray[index], name: e.target.value }
 
-    this.setState({
-      series: newSeriesArray
-    })
+      this.setState({
+        series: newSeriesArray
+      })
+    }
   }
 
   addNewSeries(e) {
@@ -159,10 +145,6 @@ class BasicColumnChart extends Component {
         <div className="chart-control">
           <div className="chart-control-group">
             <label className="field-label">Y-Axis Title:</label>
-            <TextField className={classes.textField} label="Y-Axis Title" variant="outlined" onChange={e => this.setCategories(e)} />
-          </div>
-          <div className="chart-control-group">
-            <label className="field-label">X-Axis labels:</label>
             <TextField className={classes.textField} label="Y-Axis Title" variant="outlined" onChange={e => this.setCategories(e)} />
           </div>
         </div>
