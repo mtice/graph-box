@@ -1,159 +1,225 @@
 import React, { Component } from "react";
 import Chart from 'react-apexcharts';
-import TextField from '@material-ui/core/TextField';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import { withStyles } from '@material-ui/core/styles';
-import './index.scss';
+import { LoopSeries, LoopCategories } from './loops';
 
-const styles = theme => ({
-  textField: {
-    marginLeft: 8,
-    marginRight: 8
-  },
-  button: {
-    margin: 8
-  },
-  editTextField: {
-    marginTop: 12,
-    marginBottom: 12
-  },
-  chart: {
-    position: "fixed",
-    left: 350,
-    height: "100%",
-    width: "100%"
-  }
-})
+//@material-ui styling
+import { withStyles } from '@material-ui/core/styles';
+import { styles } from './classes';
+
+
+//@material-ui components
+import AddIcon from '@material-ui/icons/Add';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Fab from '@material-ui/core/Fab';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 
 class BasicColumnChart extends Component {
-  state = {
-    series: [{
-      name: 'Net Profit',
-      data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-    }, {
-      name: 'Revenue',
-      data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-    }, {
-      name: 'Free Cash Flow',
-      data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-    }],
-    options: {
-      chart: {
-        type: 'bar',
-        height: 350
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: '55%',
-          endingShape: 'rounded'
-        },
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ['transparent']
-      },
-      xaxis: {
-        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-      },
-      yaxis: {
-        title: {
-          text: '$ (thousands)'
-        }
-      },
-      fill: {
-        opacity: 1
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return "$ " + val + " thousands"
-          }
-        }
-      }
-    },
-  };
 
-  setXAxisName(series, event) {
-    let newSeriesArray = [...this.state.series]
-    newSeriesArray[series] = { ...newSeriesArray[series], name: event.target.value }
-
-    this.setState({
-      series: newSeriesArray
-    })
-  }
-
-  setCategories(e) {
-    this.setState({
+  constructor() {
+    super();
+    this.state = {
+      series: [{
+        name: '',
+        data: []
+      }],
       options: {
+        chart: {
+          type: 'bar',
+          height: 350
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            endingShape: 'rounded'
+          },
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          show: true,
+          width: 2,
+          colors: ['transparent']
+        },
+        xaxis: {
+          categories: [],
+        },
         yaxis: {
           title: {
-            text: e.target.value
+            text: ''
+          }
+        },
+        title: {
+          text: '',
+          align: 'center',
+        }
+      },
+    };
+
+    this.editCategories = this.editCategories.bind(this);
+    this.editSeriesTitle = this.editSeriesTitle.bind(this);
+    this.editSeriesValues = this.editSeriesValues.bind(this);
+  }
+
+  editYAxisName(e) {
+    const { value } = e.target;
+
+    this.setState({
+      options: {
+        ...this.state.options,
+        yaxis: {
+          title: {
+            text: value
           }
         }
       }
     })
   }
 
-  editSeries(e, name) {
-    if (e.target.value !== "") {
-      const newSeriesArray = [...this.state.series]
-      const index = newSeriesArray.findIndex((i) => i.name === name)
+  editTitle(e) {
+    const { value } = e.target;
 
-      newSeriesArray[index] = { ...newSeriesArray[index], name: e.target.value }
+    this.setState({
+      options: {
+        ...this.state.options,
+        title: {
+          ...this.state.options.title,
+          text: value
+        }
+      }
+    })
+  }
+
+  editSeriesTitle(e, seriesName) {
+    const { value } = e.target
+    if (value !== "") {
+      const seriesCopy = [...this.state.series]
+      const index = seriesCopy.findIndex((obj) => obj.name === seriesName)
+
+      seriesCopy[index] = { ...seriesCopy[index], name: value }
 
       this.setState({
-        series: newSeriesArray
+        series: seriesCopy
       })
     }
   }
 
-  addNewSeries(e) {
-    let newSeriesArray = [...this.state.series, { name: "", data: [] }]
+  editSeriesValues(e, index, seriesName) {
+    const { value } = e.target
+
+    if (value !== "" && parseInt(value)) {
+      this.setState(prevState => ({
+        series: prevState.series.map((series) => {
+          if (series.name !== seriesName) {
+            return series
+          }
+
+          return {
+            ...series,
+            data: series.data.map((dataValue, dataIndex) => {
+              if (dataIndex !== index) {
+                return dataValue
+              }
+
+              return value
+            })
+          }
+        })
+      }))
+    }
+  }
+
+  editCategories(e, categoryIndex) {
+    const { value } = e.target;
+    const categoriesCopy = [...this.state.options.xaxis.categories]
+
+    categoriesCopy[categoryIndex] = value
 
     this.setState({
-      series: newSeriesArray
+      options: {
+        ...this.state.options,
+        xaxis: {
+          categories: categoriesCopy
+        }
+      }
+    });
+  }
+
+  addNewCategory() {
+    const { categories } = this.state.options.xaxis
+    this.setState({
+      series: this.state.series.map(({ data, name }) => {
+        return {
+          data: data.concat([0]),
+          name
+        }
+      }),
+      options: {
+        ...this.state.options,
+        xaxis: {
+          categories: [...categories, ...[""]]
+        }
+      }
     })
   }
 
-  loopExistingData(classes) {
-    return this.state.series.map((series) => {
-      const name = series.name;
+  addNewSeries(e) {
+    const data = this.state.options.xaxis.categories.map(() => 0)
 
-      return (
-        <div key={name}>
-          <TextField className={classes.editTextField} label={name} variant="outlined" onBlur={e => this.editSeries(e, name)} />
-        </div>
-      )
-    });
+    this.setState({
+      series: [...this.state.series, { name: "", data }]
+    })
   }
 
   render() {
     const { classes } = this.props;
+    const { series } = this.state
+    const { categories } = this.state.options.xaxis
+
     return (
       <div id="chart" className={classes.chart}>
         <Chart options={this.state.options} series={this.state.series} type="bar" height={350} />
 
-        {this.loopExistingData(classes)}
-
-        <label className="field-label">Add More Data:</label>
-        <Fab size="small" color="primary" aria-label="add" className={classes.button} onClick={() => { this.addNewSeries() }} >
-          <AddIcon />
-        </Fab>
-        <hr />
-
-
-        <div className="chart-control">
-          <div className="chart-control-group">
-            <label className="field-label">Y-Axis Title:</label>
-            <TextField className={classes.textField} label="Y-Axis Title" variant="outlined" onChange={e => this.setCategories(e)} />
-          </div>
-        </div>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+            <Typography>Chart Labels: </Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <div className={classes.chartControl}>
+              <div>
+                <Typography className={classes.fieldLabel}>Y-Axis Title:</Typography>
+                <TextField className={classes.textField} label={this.state.options.yaxis.title.text} variant="outlined" onBlur={e => this.editYAxisName(e)} />
+              </div>
+              <div>
+                <Typography className={classes.fieldLabel}>Title:</Typography>
+                <TextField className={classes.textField} label={this.state.options.title.text} variant="outlined" onBlur={e => this.editTitle(e)} />
+              </div>
+              <div>
+                <Typography className={classes.fieldLabel}>Categories:</Typography>
+                <LoopCategories categories={categories} classes={classes} editCategories={this.editCategories} />
+                <Fab size="small" color="primary" aria-label="add" className={classes.addDataButton} onClick={() => { this.addNewCategory() }} >
+                  <AddIcon />
+                </Fab>
+              </div>
+            </div>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+            <Typography>Chart Data: </Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <LoopSeries categories={categories} classes={classes} series={series} editSeriesTitle={this.editSeriesTitle} editSeriesValues={this.editSeriesValues} />
+            <Fab size="small" color="primary" aria-label="add" className={classes.addDataButton} onClick={() => { this.addNewSeries() }} >
+              <AddIcon />
+            </Fab>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
       </div>
     );
   }
