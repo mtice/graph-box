@@ -29,6 +29,6 @@ export const styles = theme => ({
     position: "fixed",
     left: 350,
     height: "100%",
-    width: "100%"
+    width: "calc(100% - 350px)"
   }
 })
