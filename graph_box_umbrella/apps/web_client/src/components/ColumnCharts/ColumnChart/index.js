@@ -17,6 +17,12 @@ const styles = theme => ({
   editTextField: {
     marginTop: 12,
     marginBottom: 12
+  },
+  chart: {
+    position: "fixed",
+    left: 350,
+    height: "100%",
+    width: "100%"
   }
 })
 
@@ -130,7 +136,7 @@ class BasicColumnChart extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div id="chart">
+      <div id="chart" className={classes.chart}>
         <Chart options={this.state.options} series={this.state.series} type="bar" height={350} />
 
         {this.loopExistingData(classes)}
