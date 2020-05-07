@@ -17,46 +17,87 @@ import Fab from '@material-ui/core/Fab';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
-class BasicColumnChart extends Component {
-
+class ColumnWithLabels extends React.Component {
   constructor() {
     super();
+
     this.state = {
       series: [{
-        name: '',
-        data: []
+        name: 'Inflation',
+        data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
       }],
       options: {
         chart: {
+          height: 450,
           type: 'bar',
-          height: 350
         },
         plotOptions: {
           bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            endingShape: 'rounded'
-          },
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
-        },
-        xaxis: {
-          categories: [],
-        },
-        yaxis: {
-          title: {
-            text: ''
+            dataLabels: {
+              position: 'top', // top, center, bottom
+            },
           }
         },
+        dataLabels: {
+          enabled: true,
+          formatter: function (val) {
+            return val + "%";
+          },
+          offsetY: -10,
+          style: {
+            fontSize: '12px',
+            colors: ["#304758"]
+          }
+        },
+
+        xaxis: {
+          categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+          position: 'top',
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false
+          },
+          crosshairs: {
+            fill: {
+              type: 'gradient',
+              gradient: {
+                colorFrom: '#D8E3F0',
+                colorTo: '#BED1E6',
+                stops: [0, 100],
+                opacityFrom: 0.4,
+                opacityTo: 0.5,
+              }
+            }
+          },
+          tooltip: {
+            enabled: true,
+          }
+        },
+        yaxis: {
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            show: false,
+            formatter: function (val) {
+              return val + "%";
+            }
+          }
+
+        },
         title: {
-          text: '',
+          text: 'Monthly Inflation in Argentina, 2002',
+          floating: true,
+          margin: 50,
           align: 'center',
+          style: {
+            color: '#444'
+          }
         }
       },
     };
@@ -66,19 +107,22 @@ class BasicColumnChart extends Component {
     this.editSeriesValues = this.editSeriesValues.bind(this);
   }
 
-  editYAxisName(e) {
+  editCategories(e, categoryIndex) {
     const { value } = e.target;
+    if (value !== "") {
+      const categoriesCopy = [...this.state.options.xaxis.categories]
 
-    this.setState({
-      options: {
-        ...this.state.options,
-        yaxis: {
-          title: {
-            text: value
+      categoriesCopy[categoryIndex] = value
+
+      this.setState({
+        options: {
+          ...this.state.options,
+          xaxis: {
+            categories: categoriesCopy
           }
         }
-      }
-    })
+      });
+    }
   }
 
   editTitle(e) {
@@ -134,22 +178,6 @@ class BasicColumnChart extends Component {
     }
   }
 
-  editCategories(e, categoryIndex) {
-    const { value } = e.target;
-    const categoriesCopy = [...this.state.options.xaxis.categories]
-
-    categoriesCopy[categoryIndex] = value
-
-    this.setState({
-      options: {
-        ...this.state.options,
-        xaxis: {
-          categories: categoriesCopy
-        }
-      }
-    });
-  }
-
   addNewCategory() {
     const { categories } = this.state.options.xaxis
     this.setState({
@@ -192,10 +220,6 @@ class BasicColumnChart extends Component {
           <ExpansionPanelDetails>
             <div className={classes.chartControl}>
               <div>
-                <Typography className={classes.fieldLabel}>Y-Axis Title:</Typography>
-                <TextField className={classes.textField} label={this.state.options.yaxis.title.text} variant="outlined" onBlur={e => this.editYAxisName(e)} />
-              </div>
-              <div>
                 <Typography className={classes.fieldLabel}>Title:</Typography>
                 <TextField className={classes.textField} label={this.state.options.title.text} variant="outlined" onBlur={e => this.editTitle(e)} />
               </div>
@@ -220,9 +244,10 @@ class BasicColumnChart extends Component {
             </Fab>
           </ExpansionPanelDetails>
         </ExpansionPanel>
+
       </div>
     );
   }
 }
 
-export default withStyles(styles)(BasicColumnChart);
+export default withStyles(styles)(ColumnWithLabels);

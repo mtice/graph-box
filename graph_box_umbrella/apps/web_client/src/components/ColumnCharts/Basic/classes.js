@@ -26,9 +26,8 @@ export const styles = theme => ({
     display: "flex"
   },
   chart: {
-    position: "fixed",
-    left: 350,
+    paddingLeft: 343,
     height: "100%",
-    width: "calc(100% - 350px)"
+    width: "calc(100% - 335px)"
   }
 })
