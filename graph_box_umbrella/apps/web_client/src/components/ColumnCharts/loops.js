@@ -1,6 +1,7 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import DatePicker from '../DatePicker';
 
 class LoopCategories extends React.PureComponent {
   render() {
@@ -12,6 +13,16 @@ class LoopCategories extends React.PureComponent {
         </div>
       )
     });
+  }
+}
+
+class LoopDateCategories extends React.PureComponent {
+  render() {
+    const { categories, editDateCategories } = this.props
+
+    return categories.map((category, index) => (
+      <DatePicker callback={editDateCategories} index={index} category={category} key={`${category}-${index}`} />
+    ));
   }
 }
 
@@ -58,4 +69,4 @@ class LoopSeriesData extends React.PureComponent {
   }
 }
 
-export { LoopSeries, LoopCategories }
+export { LoopSeries, LoopCategories, LoopDateCategories }
