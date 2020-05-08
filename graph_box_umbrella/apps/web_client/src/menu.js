@@ -59,7 +59,18 @@ function getItems() {
                 link: "/stacked-column-100"
               }
             ]
-          }
+          },
+          {
+            id: 2,
+            name: "Radar Charts",
+            subitems: [
+              {
+                id: 1,
+                name: "Radar Chart",
+                link: "/radar-chart"
+              }
+            ]
+          },
         ]
       }
     ]
