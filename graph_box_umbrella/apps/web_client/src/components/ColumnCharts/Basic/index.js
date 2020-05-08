@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import Chart from 'react-apexcharts';
-import { LoopSeries, LoopCategories } from './loops';
+import { LoopSeries, LoopCategories } from '../loops';
+import { sharedSeriesConfig, sharedOptionsConfig } from '../sharedConfig';
+import { addNewSeries, editCategories, editTitle, editSeriesTitle, editSeriesValues, addNewCategory } from '../sharedEventHandlers';
 
 //@material-ui styling
 import { withStyles } from '@material-ui/core/styles';
-import { styles } from './classes';
+import { styles } from '../classes';
 
 
 //@material-ui components
@@ -18,19 +20,13 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
 class BasicColumnChart extends Component {
-
   constructor() {
     super();
+
     this.state = {
-      series: [{
-        name: '',
-        data: []
-      }],
+      ...sharedSeriesConfig(),
       options: {
-        chart: {
-          type: 'bar',
-          height: 350
-        },
+        ...sharedOptionsConfig(),
         plotOptions: {
           bar: {
             horizontal: false,
@@ -53,17 +49,16 @@ class BasicColumnChart extends Component {
           title: {
             text: ''
           }
-        },
-        title: {
-          text: '',
-          align: 'center',
         }
       },
     };
 
-    this.editCategories = this.editCategories.bind(this);
-    this.editSeriesTitle = this.editSeriesTitle.bind(this);
-    this.editSeriesValues = this.editSeriesValues.bind(this);
+    this.addNewSeries = addNewSeries.bind(this);
+    this.editCategories = editCategories.bind(this);
+    this.editTitle = editTitle.bind(this);
+    this.editSeriesTitle = editSeriesTitle.bind(this);
+    this.editSeriesValues = editSeriesValues.bind(this);
+    this.addNewCategory = addNewCategory.bind(this);
   }
 
   editYAxisName(e) {
@@ -78,101 +73,6 @@ class BasicColumnChart extends Component {
           }
         }
       }
-    })
-  }
-
-  editTitle(e) {
-    const { value } = e.target;
-
-    this.setState({
-      options: {
-        ...this.state.options,
-        title: {
-          ...this.state.options.title,
-          text: value
-        }
-      }
-    })
-  }
-
-  editSeriesTitle(e, seriesName) {
-    const { value } = e.target
-    if (value !== "") {
-      const seriesCopy = [...this.state.series]
-      const index = seriesCopy.findIndex((obj) => obj.name === seriesName)
-
-      seriesCopy[index] = { ...seriesCopy[index], name: value }
-
-      this.setState({
-        series: seriesCopy
-      })
-    }
-  }
-
-  editSeriesValues(e, index, seriesName) {
-    const { value } = e.target
-
-    if (value !== "" && parseInt(value)) {
-      this.setState(prevState => ({
-        series: prevState.series.map((series) => {
-          if (series.name !== seriesName) {
-            return series
-          }
-
-          return {
-            ...series,
-            data: series.data.map((dataValue, dataIndex) => {
-              if (dataIndex !== index) {
-                return dataValue
-              }
-
-              return value
-            })
-          }
-        })
-      }))
-    }
-  }
-
-  editCategories(e, categoryIndex) {
-    const { value } = e.target;
-    const categoriesCopy = [...this.state.options.xaxis.categories]
-
-    categoriesCopy[categoryIndex] = value
-
-    this.setState({
-      options: {
-        ...this.state.options,
-        xaxis: {
-          categories: categoriesCopy
-        }
-      }
-    });
-  }
-
-  addNewCategory() {
-    const { categories } = this.state.options.xaxis
-    this.setState({
-      series: this.state.series.map(({ data, name }) => {
-        return {
-          data: data.concat([0]),
-          name
-        }
-      }),
-      options: {
-        ...this.state.options,
-        xaxis: {
-          categories: [...categories, ...[""]]
-        }
-      }
-    })
-  }
-
-  addNewSeries(e) {
-    const data = this.state.options.xaxis.categories.map(() => 0)
-
-    this.setState({
-      series: [...this.state.series, { name: "", data }]
     })
   }
 
