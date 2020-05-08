@@ -47,6 +47,11 @@ function getItems() {
                 id: 2,
                 name: "Column with Data Labels",
                 link: "/column-with-labels"
+              },
+              {
+                id: 3,
+                name: "Stacked Columns",
+                link: "/stacked-column"
               }
             ]
           }
