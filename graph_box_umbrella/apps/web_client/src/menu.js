@@ -52,6 +52,11 @@ function getItems() {
                 id: 3,
                 name: "Stacked Columns",
                 link: "/stacked-column"
+              },
+              {
+                id: 4,
+                name: "Stacked Columns 100",
+                link: "/stacked-column-100"
               }
             ]
           }

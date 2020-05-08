@@ -7,6 +7,7 @@ import './App.scss';
 import BasicColumnChart from './components/ColumnCharts/Basic/index';
 import ColumnWithLabels from './components/ColumnCharts/ColumnWithLabels/index';
 import StackedColumns from './components/ColumnCharts/StackedColumns/index';
+import StackedColumns100 from './components/ColumnCharts/StackedColumns100/index';
 import Menu from './menu';
 
 function App() {
@@ -25,6 +26,9 @@ function App() {
             </Route>
             <Route path="/stacked-column">
               <StackedColumns />
+            </Route>
+            <Route path="/stacked-column-100">
+              <StackedColumns100 />
             </Route>
           </Switch>
         </Router>
