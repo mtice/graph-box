@@ -1,5 +1,4 @@
 function addNewSeries(e) {
-  console.log('this......', this);
   const data = this.state.options.xaxis.categories.map(() => 0)
 
   this.setState({

@@ -80,7 +80,7 @@ class StackedColumns extends Component {
     if (date !== "") {
       const categoriesCopy = [...this.state.options.xaxis.categories]
 
-      categoriesCopy[categoryIndex] = date.getTime()
+      categoriesCopy[categoryIndex] = this.getDate(date)
 
       this.setState({
         options: {
@@ -93,8 +93,21 @@ class StackedColumns extends Component {
     }
   }
 
+  getDate(date) {
+    var dateObj = date || new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+
+    return `${month}/${day}/${year} GMT`;
+  }
+
   addNewDateCategory() {
     const { categories } = this.state.options.xaxis
+
+    const date = this.getDate()
+
+
     this.setState({
       series: this.state.series.map(({ data, name }) => {
         return {
@@ -105,7 +118,7 @@ class StackedColumns extends Component {
       options: {
         ...this.state.options,
         xaxis: {
-          categories: [...categories, ...[new Date().getTime()]]
+          categories: [...categories, date]
         }
       }
     })

@@ -6,24 +6,19 @@ export default class StackedColumns extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      selectedDate: new Date()
-    }
-
     this.handleDateChange = this.handleDateChange.bind(this)
   }
 
+  formatCategory(category) {
+    const [withoutGMT] = category.split(" ")
+    return withoutGMT
+  }
+
   handleDateChange(date) {
-    this.setState({
-      selectedDate: date
-    }, () => {
-      console.log('kkkkkk', this.props.category);
-      this.props.callback(date, this.props.index)
-    })
+    this.props.callback(date, this.props.index)
   };
 
   render() {
-    console.log('jjj', this.state);
     return <KeyboardDatePicker
       disableToolbar
       variant="inline"
@@ -31,7 +26,7 @@ export default class StackedColumns extends Component {
       margin="normal"
       id="date-picker-inline"
       label="Date picker inline"
-      value={this.props.category}
+      value={this.formatCategory(this.props.category)}
       onChange={this.handleDateChange}
       KeyboardButtonProps={{
         'aria-label': 'change date',
