@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Chart from 'react-apexcharts';
-import { LoopSeries, LoopCategories } from '../loops';
-import { sharedSeriesConfig, sharedOptionsConfig } from '../sharedConfig';
-import { addNewSeries, editCategories, editTitle, editSeriesTitle, editSeriesValues, addNewCategory } from '../sharedEventHandlers';
+import { LoopSeries, LoopCategories } from '../shared/loops';
+import { sharedSeriesConfig, sharedOptionsConfig } from '../shared/config';
+import { addNewSeries, editCategories, editTitle, editSeriesTitle, editSeriesValues, addNewCategory } from '../shared/eventHandlers';
 
 //@material-ui styling
 import { withStyles } from '@material-ui/core/styles';
-import { styles } from '../classes';
+import { styles } from '../shared/classes';
 
 
 //@material-ui components

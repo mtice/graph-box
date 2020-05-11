@@ -1,3 +1,5 @@
+import { getDate } from '../shared/functions.js';
+
 function addNewSeries(e) {
   const data = this.state.options.xaxis.categories.map(() => 0)
 
@@ -33,6 +35,21 @@ function editTitle(e) {
       title: {
         ...this.state.options.title,
         text: value
+      }
+    }
+  })
+}
+
+function editYAxisName(e) {
+  const { value } = e.target;
+
+  this.setState({
+    options: {
+      ...this.state.options,
+      yaxis: {
+        title: {
+          text: value
+        }
       }
     }
   })
@@ -95,4 +112,52 @@ function addNewCategory() {
   })
 }
 
-export { addNewSeries, editCategories, editTitle, editSeriesTitle, editSeriesValues, addNewCategory };
+
+function editDateCategories(date, categoryIndex) {
+  if (date !== "") {
+    const categoriesCopy = [...this.state.options.xaxis.categories]
+
+    categoriesCopy[categoryIndex] = getDate(date)
+
+    this.setState({
+      options: {
+        ...this.state.options,
+        xaxis: {
+          categories: categoriesCopy
+        }
+      }
+    });
+  }
+}
+
+function addNewDateCategory() {
+  const { categories } = this.state.options.xaxis
+  const date = getDate()
+
+  this.setState({
+    series: this.state.series.map(({ data, name }) => {
+      return {
+        data: data.concat([0]),
+        name
+      }
+    }),
+    options: {
+      ...this.state.options,
+      xaxis: {
+        categories: [...categories, date]
+      }
+    }
+  })
+}
+
+export {
+  addNewSeries,
+  editCategories,
+  editTitle,
+  editSeriesTitle,
+  editSeriesValues,
+  addNewCategory,
+  editYAxisName,
+  editDateCategories,
+  addNewDateCategory
+};

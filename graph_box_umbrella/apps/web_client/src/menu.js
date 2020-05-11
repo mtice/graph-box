@@ -57,6 +57,11 @@ function getItems() {
                 id: 4,
                 name: "Stacked Columns 100",
                 link: "/stacked-column-100"
+              },
+              {
+                id: 5,
+                name: "Columns with Negative Values",
+                link: "/column-with-negatives"
               }
             ]
           }

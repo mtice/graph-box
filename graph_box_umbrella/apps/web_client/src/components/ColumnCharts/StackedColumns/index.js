@@ -1,12 +1,19 @@
 import React, { Component } from "react";
 import Chart from 'react-apexcharts';
-import { LoopSeries, LoopDateCategories } from '../loops';
-import { sharedSeriesConfig, sharedOptionsConfig } from '../sharedConfig';
-import { addNewSeries, editTitle, editSeriesTitle, editSeriesValues } from '../sharedEventHandlers';
+import { LoopSeries, LoopDateCategories } from '../shared/loops';
+import { sharedSeriesConfig, sharedOptionsConfig } from '../shared/config';
+import {
+  addNewSeries,
+  editTitle,
+  editSeriesTitle,
+  editSeriesValues,
+  editDateCategories,
+  addNewDateCategory
+} from '../shared/eventHandlers';
 
 //@material-ui styling
 import { withStyles } from '@material-ui/core/styles';
-import { styles } from '../classes';
+import { styles } from '../shared/classes';
 
 
 //@material-ui components
@@ -71,57 +78,8 @@ class StackedColumns extends Component {
     this.editTitle = editTitle.bind(this);
     this.editSeriesTitle = editSeriesTitle.bind(this);
     this.editSeriesValues = editSeriesValues.bind(this);
-    this.addNewDateCategory = this.addNewDateCategory.bind(this);
-    this.editDateCategories = this.editDateCategories.bind(this);
-  }
-
-
-  editDateCategories(date, categoryIndex) {
-    if (date !== "") {
-      const categoriesCopy = [...this.state.options.xaxis.categories]
-
-      categoriesCopy[categoryIndex] = this.getDate(date)
-
-      this.setState({
-        options: {
-          ...this.state.options,
-          xaxis: {
-            categories: categoriesCopy
-          }
-        }
-      });
-    }
-  }
-
-  getDate(date) {
-    var dateObj = date || new Date();
-    var month = dateObj.getUTCMonth() + 1; //months from 1-12
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();
-
-    return `${month}/${day}/${year} GMT`;
-  }
-
-  addNewDateCategory() {
-    const { categories } = this.state.options.xaxis
-
-    const date = this.getDate()
-
-
-    this.setState({
-      series: this.state.series.map(({ data, name }) => {
-        return {
-          data: data.concat([0]),
-          name
-        }
-      }),
-      options: {
-        ...this.state.options,
-        xaxis: {
-          categories: [...categories, date]
-        }
-      }
-    })
+    this.addNewDateCategory = addNewDateCategory.bind(this);
+    this.editDateCategories = editDateCategories.bind(this);
   }
 
   render() {
