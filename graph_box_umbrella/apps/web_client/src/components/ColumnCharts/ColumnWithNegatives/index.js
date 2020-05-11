@@ -1,8 +1,19 @@
+
+
+
 import React, { Component } from "react";
 import Chart from 'react-apexcharts';
-import { LoopSeries, LoopCategories } from '../shared/loops';
+import { LoopSeries, LoopDateCategories } from '../shared/loops';
 import { sharedSeriesConfig, sharedOptionsConfig } from '../shared/config';
-import { addNewSeries, editCategories, editTitle, editSeriesTitle, editSeriesValues, addNewCategory, editYAxisName } from '../shared/eventHandlers';
+import {
+  addNewSeries,
+  editTitle,
+  editSeriesTitle,
+  editSeriesValues,
+  editYAxisName,
+  editDateCategories,
+  addNewDateCategory
+} from '../shared/eventHandlers';
 
 //@material-ui styling
 import { withStyles } from '@material-ui/core/styles';
@@ -19,7 +30,7 @@ import Fab from '@material-ui/core/Fab';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 
-class BasicColumnChart extends Component {
+class ColumnWithNegatives extends Component {
   constructor() {
     super();
 
@@ -29,37 +40,50 @@ class BasicColumnChart extends Component {
         ...sharedOptionsConfig(),
         plotOptions: {
           bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            endingShape: 'rounded'
-          },
+            colors: {
+              ranges: [{
+                from: -100,
+                to: -46,
+                color: '#F15B46'
+              }, {
+                from: -45,
+                to: 0,
+                color: '#FEB019'
+              }]
+            },
+            columnWidth: '80%',
+          }
         },
         dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
-        },
-        xaxis: {
-          categories: [],
+          enabled: false,
         },
         yaxis: {
           title: {
-            text: ''
+            text: '',
+          },
+          labels: {
+            formatter: function (y) {
+              return y.toFixed(0) + "%";
+            }
+          }
+        },
+        xaxis: {
+          type: 'datetime',
+          categories: [],
+          labels: {
+            rotate: -90
           }
         }
-      },
+      }
     };
 
     this.addNewSeries = addNewSeries.bind(this);
-    this.editCategories = editCategories.bind(this);
     this.editTitle = editTitle.bind(this);
+    this.editYAxisName = editYAxisName.bind(this);
     this.editSeriesTitle = editSeriesTitle.bind(this);
     this.editSeriesValues = editSeriesValues.bind(this);
-    this.editYAxisName = editYAxisName.bind(this);
-    this.addNewCategory = addNewCategory.bind(this);
+    this.addNewDateCategory = addNewDateCategory.bind(this);
+    this.editDateCategories = editDateCategories.bind(this);
   }
 
   render() {
@@ -87,8 +111,8 @@ class BasicColumnChart extends Component {
               </div>
               <div>
                 <Typography className={classes.fieldLabel}>Categories:</Typography>
-                <LoopCategories categories={categories} classes={classes} editCategories={this.editCategories} />
-                <Fab size="small" color="primary" aria-label="add" className={classes.addDataButton} onClick={() => { this.addNewCategory() }} >
+                <LoopDateCategories categories={categories} classes={classes} editDateCategories={this.editDateCategories} />
+                <Fab size="small" color="primary" aria-label="add" className={classes.addDataButton} onClick={() => { this.addNewDateCategory() }} >
                   <AddIcon />
                 </Fab>
               </div>
@@ -111,4 +135,4 @@ class BasicColumnChart extends Component {
   }
 }
 
-export default withStyles(styles)(BasicColumnChart);
+export default withStyles(styles)(ColumnWithNegatives);
