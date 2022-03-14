@@ -1,6 +1,6 @@
 import 'date-fns';
 import React, { Component } from 'react';
-import { KeyboardDatePicker } from '@material-ui/pickers';
+import TextField from '@material-ui/core/TextField';
 
 export default class StackedColumns extends Component {
   constructor(props) {
@@ -14,22 +14,19 @@ export default class StackedColumns extends Component {
     return withoutGMT
   }
 
-  handleDateChange(date) {
-    this.props.callback(date, this.props.index)
+  handleDateChange(e) {
+    this.props.callback(e.target.value, this.props.index)
   };
 
   render() {
-    return <KeyboardDatePicker
-      disableToolbar
-      variant="inline"
-      format="MM/dd/yyyy"
-      margin="normal"
-      id="date-picker-inline"
-      label="Date picker inline"
-      value={this.formatCategory(this.props.category)}
-      onChange={this.handleDateChange}
-      KeyboardButtonProps={{
-        'aria-label': 'change date',
+    return <TextField
+      id="date"
+      label="Date"
+      type="date"
+      defaultValue={this.formatCategory(this.props.category)}
+      onBlur={this.handleDateChange}
+      InputLabelProps={{
+        shrink: true,
       }}
     />
   }
